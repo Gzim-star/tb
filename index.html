@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Green Energy Mini Game</title>
+<style>
+body { 
+    text-align:center; 
+    font-family:Arial; 
+    background:#e6ffe6; 
+    margin-top:50px;
+}
+#score { 
+    font-size: 28px; 
+    margin: 20px; 
+}
+#btn {
+    padding:20px 40px;
+    background:green; 
+    color:white;
+    font-size:24px; 
+    border:none; 
+    border-radius:10px;
+    cursor:pointer;
+}
+#btn:active {
+    background:darkgreen;
+}
+</style>
+</head>
+<body>
+
+<h1>⚡ Green Energy Collector</h1>
+<p>Sammle so viele Energiepunkte wie möglich!</p>
+
+<div id="score">Punkte: 0</div>
+<button id="btn">Energie sammeln</button>
+
+<script>
+let score = 0;
+
+document.getElementById("btn").onclick = function() {
+    score++;
+    document.getElementById("score").innerText = "Punkte: " + score;
+};
+</script>
+
+</body>
+</html>
