@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>🧠 Brain Challenge</title>
+<title>🧠</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 
@@ -89,12 +89,12 @@ button:hover { background: #4caf50; }
 
 <body>
 <div id="gameContainer">
-  <h1>🧠 BRAIN CHALLENGE</h1>
+  <h1>🧠</h1>
   <button onclick="startWordChain()">START</button>
 </div>
 
 <script>
-let stage='start'; // start, word, tictactoe, math
+let stage='start';
 let wordScore=0;
 let ticScore={player:0,ai:0,draw:0};
 let correctAnswer=0;
@@ -103,7 +103,6 @@ let timerInterval;
 let board=[];
 let gameOver=false;
 
-// ===== START SCREEN =====
 function startWordChain(){
   stage='word';
   const container=document.getElementById('gameContainer');
@@ -163,7 +162,6 @@ function aiTurn(){
   if(wordScore>=6){ setTimeout(startTicTacToe,800);}
 }
 
-// ===== TICTACTOE =====
 function startTicTacToe(){
   stage='tictactoe';
   const container=document.getElementById('gameContainer');
@@ -250,7 +248,6 @@ function minimax(b,depth,isMax){if(checkWinner('O')) return 10-depth; if(checkWi
 function checkWinner(p){const wins=[[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]; return wins.some(w=>w.every(i=>board[i]===p));}
 function updateScore(){document.getElementById('scoreboard').textContent=`Player: ${ticScore.player} | AI: ${ticScore.ai} | Draws: ${ticScore.draw}`;}
 
-// ===== MATH CHALLENGE =====
 function startMathChallenge(){
   stage='math';
   const container=document.getElementById('gameContainer');
@@ -289,4 +286,4 @@ function checkAnswer(){
 }
 </script>
 </body>
-</html>p
+</html>
