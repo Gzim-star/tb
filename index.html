@@ -39,7 +39,6 @@ button:hover { background: #4caf50; }
 #board { display: grid; grid-template-columns: repeat(3, 150px); grid-template-rows: repeat(3, 150px); gap: 10px; margin: 0 auto; }
 .cell { width: 150px; height: 150px; display: flex; align-items: center; justify-content: center; font-size: 72px; cursor: pointer; transition: all 0.3s; color: white; font-weight: bold; border-radius: 12px; }
 .cell:hover { transform: scale(1.05); filter: brightness(1.2); }
-.highlight { background: #ffe082 !important; color: #000 !important; }
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
 @media (max-width: 768px) { h1 { font-size: 1.4em; } #task,#wordDisplay { font-size: 1.2em; } input { font-size: 0.9em; } button { font-size: 0.9em; padding: 10px 20px; } }
 @media (max-width: 600px) { #board { grid-template-columns: repeat(3, 100px); grid-template-rows: repeat(3, 100px); } .cell { width: 100px; height: 100px; font-size: 48px; } }
@@ -95,10 +94,9 @@ function playWord(){
 function aiTurn(){
   const lastChar = currentWord.slice(-1).toLowerCase();
   let possible = wordList.filter(w=>w[0].toLowerCase()===lastChar && !usedWords.includes(w));
-  if(possible.length===0){ const remaining = wordList.filter(w=>!usedWords.includes(w)); if(remaining.length>0){ let randomWord=remaining[Math.floor(Math.random()*remaining.length)]; usedWords.push(randomWord); currentWord=randomWord; document.getElementById("wordDisplay").textContent=` ${currentWord}`; } wordChainScore++; if(wordChainScore>=6){ startTicTacToe(); } return; }
-  let best=possible[0]; let max=-1;
-  for(let w of possible){ const next=w.slice(-1).toLowerCase(); const options=wordList.filter(p=>p[0].toLowerCase()===next && !usedWords.includes(p)); if(options.length>max){ max=options.length; best=w; } }
-  usedWords.push(best); currentWord=best; document.getElementById("wordDisplay").textContent=` ${currentWord}`; wordChainScore++; if(wordChainScore>=6){ startTicTacToe(); }
+  let best;
+  if(possible.length===0){ const remaining = wordList.filter(w=>!usedWords.includes(w)); if(remaining.length>0){ best=remaining[Math.floor(Math.random()*remaining.length)]; usedWords.push(best); currentWord=best; document.getElementById("wordDisplay").textContent=` ${currentWord}`; } wordChainScore++; if(wordChainScore>=6){ startTicTacToe(); } return; }
+  best=possible[0]; usedWords.push(best); currentWord=best; document.getElementById("wordDisplay").textContent=` ${currentWord}`; wordChainScore++; if(wordChainScore>=6){ startTicTacToe(); }
 }
 
 function startTicTacToe(){
@@ -109,7 +107,6 @@ function startTicTacToe(){
     <div id="timer">⏳ Time left: 6</div>
     <div id="message"></div>
     <div id="scoreboard">Player: 0 | AI: 0 | Draws: 0</div>
-    <button onclick="resetGame()">Restart Game</button>
   `;
   ticScore={player:0,ai:0,draw:0};
   board=['','','','','','','','',''];
@@ -117,7 +114,7 @@ function startTicTacToe(){
   renderBoard(); startTimer();
 }
 
-let board=['','','','','','','','',''],gameOver=false,timer=6,timerInterval;
+let board=['','','','','','','','',''], gameOver=false, timer=6, timerInterval;
 
 function randomColor(){ const colors=["#e57373","#f06292","#ba68c8","#9575cd","#7986cb","#64b5f6","#4dd0e1","#4db6ac","#81c784","#aed581","#fff176","#ffd54f","#ffb74d","#ff8a65"]; return colors[Math.floor(Math.random()*colors.length)]; }
 function renderBoard(){ const boardDiv=document.getElementById('board'); boardDiv.innerHTML=''; board.forEach((cell,index)=>{ const div=document.createElement('div'); div.className='cell'; div.textContent=cell; if(cell==='') div.style.backgroundColor=randomColor(); div.onclick=()=>playerMove(index); boardDiv.appendChild(div); }); }
@@ -126,7 +123,6 @@ function playerMove(i){ if(board[i]!=='') return; board[i]='X'; clearInterval(ti
 function aiMove(){ if(gameOver) return; let move=randomMove(); board[move]='O'; renderBoard(); if(checkWinner('O')){ gameOver=true; ticScore.ai++; document.getElementById('message').textContent="AI wins! 🤖"; updateScore(); return; } if(board.every(c=>c!=='')){ gameOver=true; ticScore.draw++; updateScore(); return; } startTimer(); }
 function randomMove(){ const empty=board.map((v,i)=>v===''?i:null).filter(v=>v!==null); return empty[Math.floor(Math.random()*empty.length)]; }
 function updateScore(){ document.getElementById('scoreboard').textContent=`Player: ${ticScore.player} | AI: ${ticScore.ai} | Draws: ${ticScore.draw}`; }
-function resetGame(){ board=['','','','','','','','','']; gameOver=false; document.getElementById('message').textContent=''; renderBoard(); startTimer(); }
 function startTimer(){ clearInterval(timerInterval); timer=6; updateTimerUI(); timerInterval=setInterval(()=>{ timer--; updateTimerUI(); if(timer===0){ clearInterval(timerInterval); aiMove(); } },1000); }
 function updateTimerUI(){ const timerDiv=document.getElementById('timer'); timerDiv.textContent=`⏳ Time left: ${timer}`; timerDiv.className=''; if(timer>=4) timerDiv.classList.add('timer-green'); else if(timer>=2) timerDiv.classList.add('timer-yellow'); else timerDiv.classList.add('timer-red'); }
 
@@ -145,23 +141,8 @@ function startMathChallenge(){
 }
 
 function randomInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
-
-function generateMathTask(){
-  const pattern=randomInt(1,3);
-  let a,b,c,text;
-  if(pattern===1){ a=randomInt(10,40); b=randomInt(2,12); c=randomInt(5,30); correctAnswer=a+b*c; text=`${a} + ${b} × ${c}`; }
-  if(pattern===2){ a=randomInt(20,80); b=randomInt(2,10); c=randomInt(5,30); correctAnswer=a-b*c; text=`${a} − ${b} × ${c}`; }
-  if(pattern===3){ a=randomInt(20,80); b=randomInt(2,10); c=randomInt(2,6); correctAnswer=a+b*c; text=`${a} + ${b} × ${c}`; }
-  document.getElementById('task').textContent=`${text} = `;
-  document.getElementById('answer').value=''; document.getElementById('answer').focus(); document.getElementById('message').textContent='';
-}
-
-function checkMathAnswer(){
-  const input=document.getElementById('answer'); const message=document.getElementById('message');
-  if(input.value==='') return;
-  if(Number(input.value)===correctAnswer){ message.textContent="✅ Correct!"; } else{ message.textContent=`❌ Wrong! Correct was ${correctAnswer}`; }
-  setTimeout(generateMathTask,700);
-}
+function generateMathTask(){ const pattern=randomInt(1,3); let a,b,c,text; if(pattern===1){ a=randomInt(10,40); b=randomInt(2,12); c=randomInt(5,30); correctAnswer=a+b*c; text=`${a} + ${b} × ${c}`; } if(pattern===2){ a=randomInt(20,80); b=randomInt(2,10); c=randomInt(5,30); correctAnswer=a-b*c; text=`${a} − ${b} × ${c}`; } if(pattern===3){ a=randomInt(20,80); b=randomInt(2,10); c=randomInt(2,6); correctAnswer=a+b*c; text=`${a} + ${b} × ${c}`; } document.getElementById('task').textContent=`${text} = `; document.getElementById('answer').value=''; document.getElementById('answer').focus(); document.getElementById('message').textContent=''; }
+function checkMathAnswer(){ const input=document.getElementById('answer'); const message=document.getElementById('message'); if(input.value==='') return; if(Number(input.value)===correctAnswer){ message.textContent="✅ Correct!"; } else{ message.textContent=`❌ Wrong! Correct was ${correctAnswer}`; } setTimeout(generateMathTask,700); }
 </script>
 </body>
 </html>
