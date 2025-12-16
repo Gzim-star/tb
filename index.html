@@ -20,7 +20,7 @@ body {
 #gameContainer {
   width: 90%;
   max-width: 700px;
-  min-height: 500px; /* Stabilität für mittige Darstellung */
+  min-height: 500px;
   padding: 20px;
   background: #000;
   border-radius: 15px;
@@ -115,6 +115,8 @@ let timer=6;
 let timerInterval;
 let board=[];
 let gameOver=false;
+let mathTimer=12; // Timer für Math-Challenge
+let mathTimerInterval;
 
 function startWordChain(){
   stage='word';
@@ -267,13 +269,40 @@ function startMathChallenge(){
   container.innerHTML=`
     <h1></h1>
     <div id="task">Loading...</div>
+    <div id="timer">⏳ Time left: 12</div>
     <div id="inputContainer">
       <input id="answer" type="number" placeholder="Your answer" autofocus>
       <button onclick="checkAnswer()">OK</button>
     </div>
     <div id="message"></div>
   `;
+  startMathTimer();
   generateTask();
+}
+
+function startMathTimer(){
+  clearInterval(mathTimerInterval);
+  mathTimer=12;
+  updateMathTimerUI();
+  mathTimerInterval=setInterval(()=>{
+    mathTimer--;
+    updateMathTimerUI();
+    if(mathTimer<=0){
+      clearInterval(mathTimerInterval);
+      alert("⏰ Time's up! Starting over.");
+      startWordChain();
+    }
+  },1000);
+}
+
+function updateMathTimerUI(){
+  const div=document.getElementById('timer');
+  if(!div) return;
+  div.textContent=`⏳ Time left: ${mathTimer}`;
+  div.className='';
+  if(mathTimer>=8) div.classList.add('timer-green');
+  else if(mathTimer>=4) div.classList.add('timer-yellow');
+  else div.classList.add('timer-red');
 }
 
 function randomInt(min,max){return Math.floor(Math.random()*(max-min+1))+min;}
@@ -292,10 +321,16 @@ function generateTask(){
 
 function checkAnswer(){
   const input=document.getElementById("answer");
-  const message=document.getElementById("message");
   if(input.value==="") return;
-  if(Number(input.value)===correctAnswer){message.textContent="✅ Correct!";} else{message.textContent=`❌ Wrong! Correct was ${correctAnswer}`;}
-  setTimeout(generateTask,700);
+  const value=Number(input.value);
+  if(value===correctAnswer){
+    document.getElementById('message').textContent="✅ Correct!";
+    setTimeout(generateTask,700);
+  } else{
+    clearInterval(mathTimerInterval);
+    alert(`❌ Wrong! Correct was ${correctAnswer}. Starting over.`);
+    startWordChain();
+  }
 }
 </script>
 </body>
