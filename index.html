@@ -180,11 +180,11 @@ function startWordChain(){
   stage='word';
   const container=document.getElementById('gameContainer');
   container.innerHTML=`
-     <h1></h1>
+      <h1></h1>
   <div id="wordDisplay">Apple</div>
 
   <div id="inputContainer">
-    <input type="text" id="playerWord" placeholder="Type your word here">
+    <input type="text" id="playerWord" placeholder="Type your word here" autocomplete="off" autocapitalize="none">
     <button onclick="playWord()">OK</button>
   </div>
 
@@ -242,12 +242,12 @@ function aiTurn(){
   const lastChar = currentWord.slice(-1).toLowerCase();
   let possible = wordList.filter(
     w => w[0].toLowerCase() === lastChar && !usedWords.includes(w)
-  );
-
-  if(possible.length === 0){
-  setTimeout(showWordChainHint, 5000); // ⏱ nach 5 Sekunden Hinweis
+  );// Wenn keine passenden Wörter → Brain Hint
+if(possible.length === 0){
+  setTimeout(showWordChainHint, 5000);
   return;
-}   
+}
+  if(possible.length === 0){
     const remaining = wordList.filter(w => !usedWords.includes(w));
     if(remaining.length > 0){
       const r = remaining[Math.floor(Math.random() * remaining.length)];
@@ -282,20 +282,19 @@ function aiTurn(){
     const msg = document.getElementById('message');
     msg.textContent = '';
     setTimeout(startTicTacToe, 500);
-  function showWordChainHint(){
-  const hint = document.getElementById('wordHint');
-  if(!hint) return;
-
-  hint.textContent = "🧠 Nur die richtigen Wörter bringen dich weiter.";
-  hint.style.opacity = "1";
-
-  setTimeout(()=>{
-    hint.style.opacity = "0";
-  }, 3000); // nach 3 Sekunden weg
+  }
 }
 
+function showWordChainHint() {
+  const hint = document.getElementById('wordHint');
+  if (!hint) return; // Falls das Element noch nicht geladen ist
+  hint.textContent = "🧠 Nur die richtigen Wörter bringen dich weiter!";
+  hint.style.opacity = "1";
 
-
+  setTimeout(() => {
+    hint.style.opacity = "0";
+  }, 3000);
+}
 // ========================== TIC TAC TOE ==========================
 function startTicTacToe(){
   stage='tic';
