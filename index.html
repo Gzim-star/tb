@@ -294,10 +294,10 @@ function showWordChainHint() {
   const hint = document.getElementById('wordHint');
   if (!hint) return; // Falls das Element noch nicht geladen ist
   hint.textContent = "Only the right words will take you further";
-  hint.style.opacity = "2";
+  hint.style.opacity = "1";
 
   setTimeout(() => {
-    hint.style.opacity = "0";
+    hint.style.opacity = "2";
   }, 3000);
 }
 // ========================== TIC TAC TOE ==========================
