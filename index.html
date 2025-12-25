@@ -129,7 +129,7 @@ tipButton.onclick = () => {
     <p>BrainTrials:<p>
     <p></p>
     <p>You are entering the arena of challenges!</p>
-    <p>Four tricky games await you: Word Chain, Tic-Tac-Toe, Math Challenge, and Chromatic Trial.</p>
+    <p>Four tricky games await you: Word Chain, Tic-Tac-Toe, Math Challenge, Chromatic Trial.</p>
     <p>Each level tests your logic, speed, and observation skills. Only those who think cleverly, react quickly, and recognize patterns can reach the end.</p>
     <p>Tip: Sometimes strategy counts more than speed.</p>
   `;
@@ -145,7 +145,7 @@ tipButton.onclick = () => {
 
   else if(stage === 'tic') tipText = `
       <p>Tic-Tac-Toe Tips:</p>
-    <ul>
+    <lu>
       <li>Get three to win.</li>
       <li>Block your opponent.</li>
       <li>Center is powerful.</li>
@@ -155,7 +155,7 @@ tipButton.onclick = () => {
 
   else if(stage === 'math') tipText = `
       <p>Math Challenge Tips:</p>
-    <ul>
+    <lu>
       <li>Follow order of operations</li>
       <li>Solve quickly,time is running!</li>
       <li>Correct answers let you advance,</li>
@@ -165,10 +165,11 @@ tipButton.onclick = () => {
 
   else if(stage === 'chromatic') tipText = `
       <p>Chromatic Trial Tips:</p>
-    <ul>
+    <lu>
       <li>Make all tiles the same color.</li>
       <li>Focus on one color.</li>
-      <li>Act fast, or the grid will reset.</li>
+      <li>Act fast,</li>
+      <li>or grid will reset.</li>
     </ul>
   `;
   tipModal.querySelector('p').innerHTML = tipText;
