@@ -228,13 +228,13 @@ are essential to advance.
     </ul>
   `;
   tipModal.querySelector('p').innerHTML = tipText;
-  tipModal.style.display = 'none';
+  tipModal.style.display = 'block';
 };
 
-closeBtn.onclick = () => tipModal.style.display = 'none';
+closeBtn.onclick = () => tipModal.style.display = 'block';
 
 window.onclick = (e) => { 
-  if(e.target === tipModal) tipModal.style.display = 'none';
+  if(e.target === tipModal) tipModal.style.display = 'block';
 };
   
 // ========================== VARIABLES ==========================
