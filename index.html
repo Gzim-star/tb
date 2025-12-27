@@ -8,14 +8,7 @@
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
 <style>
-/* ===================== START BUTTON – SYSTEM CENTER ===================== */
-#startBtn {
-  position: absolute;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-}
-  html, body { height: 100%; margin: 0; }
+html, body { height: 100%; margin: 0; }
 body {
   display: grid; place-items: center;
  /* Hintergrundbild von Pexels – Foto von Markus Spiske */
@@ -112,27 +105,13 @@ button:hover { background: #00000000; }
 .modal.open {
   display: block;
 }
-#systemHeader {
-  letter-spacing: 2px;
-  color: white;
-  position: absolute;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-52%);
-  font-family: 'Press Start 2P', cursive;
-  font-size: 1.1em;
-  opacity: 0.9;
-  pointer-events: none;
-}
+
 </style>
 </head>
 <body>
 <div id="gameContainer">
   <h1></h1>
- <div id="systemHeader">
-
-   </div> 
-  <button id="startBtn" onclick="startWordChain()">START</button>
+  <button onclick="startWordChain()">  START  </button>
 </div>
   <!-- Tip Button -->
 <button id="tipButton">❗️</button>
@@ -344,7 +323,7 @@ if(word.slice(-1).toLowerCase() === lastTwo[0]){
   const lastChar=currentWord.slice(-1).toLowerCase();
   const reversed=currentWord.split("").reverse().join("").toLowerCase();
   if(word[0].toLowerCase()!==lastChar){showWordError("❌ Wrong!");return;}
-  if(word.toLowerCase()===currentWord.toLowerCase()){showWordError("");return;}
+  if(word.toLowerCase()===currentWord.toLowerCase()){showWordError("❌ Wrong!");return;}
   if(word.toLowerCase()===reversed){showWordError("❌ Reversed!");return;}
   if(usedWords.map(w=>w.toLowerCase()).includes(word.toLowerCase())){showWordError("❌ Already used!");return;}
   usedWords.push(word); currentWord=word;
