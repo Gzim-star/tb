@@ -101,6 +101,9 @@ button:hover { background: #00000000; }
   font-family: 'Press Start 2P', cursive;
   font-size: 0.8em;
   color: whith;
+.modal.open {
+  display: block;
+ }
 }
 </style>
 </head>
@@ -126,6 +129,11 @@ const tipModal = document.getElementById('tipModal');
 const closeBtn = document.querySelector('.close');
 
 tipButton.onclick = () => {
+  // 🔁 öffnen / schließen
+  tipModal.classList.toggle('open');
+
+  // wenn geschlossen → nichts machen
+  if (!tipModal.classList.contains('open')) return;
   let tipText = '';
   if(stage === 'start') tipText = `
    <p><strong>BrainTrials</strong></p>
